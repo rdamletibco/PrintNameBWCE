@@ -1,0 +1,5 @@
+{"records": [{
+    "jsonSchemaLocation": "/sample-rest-app-cf/Service Descriptors/sample-rest-app-cf.Process-Resource.json",
+    "conversionType": "linked",
+    "xsdSchemaTargetNamespace": "http://www.example.org/RESTInput"
+}]}

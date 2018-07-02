@@ -1,0 +1,7 @@
+{
+    "records": [],
+    "resources": [{
+        "location": "Service Descriptors/sample-rest-app-cf.Process-Resource.json",
+        "type": "generated"
+    }]
+}
