@@ -1,0 +1,72 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: pocapplication
+  name: pocapplication
+spec:
+  replicas: 1
+  selector:
+    app: pocapplication
+    deploymentconfig: pocapplication
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: pocapplication
+        deploymentconfig: pocapplication
+    spec:
+      containers:
+        - env:
+           - name: NODENAME
+             value: A.poc_application
+           - name: AMS_HOSTNAME
+             value: ec2-13-59-19-125.us-east-2.compute.amazonaws.com
+           - name: PORT
+             value: "8080"
+             #   - name: BW_PROFILE
+             #value: docker
+           - name: EMP_NAME
+             value: Vinod
+          image: docker.io/alodha007/bwce-sample-rest
+          imagePullPolicy: Always
+          name: pocapplication
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pocapplication
+  name: pocapplication
+spec:
+  ports:
+    - name: 8888-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    deploymentconfig: pocapplication
+  sessionAffinity: None
+  type: ClusterIP
+  
